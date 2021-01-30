@@ -6,20 +6,22 @@ module.exports = function transform(arr) {
 
   arr.map((item, i) => {
     if (item === '--double-next') {
-      newArr.push(i + 1);
+      i !== arr.length - 1 ? newArr.push(arr[i + 1]) : null;
     } else if (item === '--double-prev') {
-      newArr.push(i);
+      i !== 0 ? newArr.push(arr[i - 1]) : null;
     } else newArr.push(item);
   });
 
-  if (newArr.includes('--discard-next') || newArr.includes('--discard-prev')) {
-    newArr = arr.filter((item, i) => {
-      if (arr.includes('--discard-next')) {
-        return (item !== '--discard-next' && i !== arr.indexOf('--discard-next') + 1);
-      } else if (arr.includes('--discard-prev')) {
-        return (item !== '--discard-prev' && i !== arr.indexOf('--discard-prev') - 1);
+  if (arr.includes('--discard-next') || arr.includes('--discard-prev')) {
+    newArr = newArr.filter((item, i) => {
+      if (newArr.includes('--discard-next')) {
+        return (item !== '--discard-next' && i !== newArr.indexOf('--discard-next') + 1 && item !== '--discard-prev');
+      } else if (newArr.includes('--discard-prev')) {
+        return (item !== '--discard-prev' && i !== newArr.indexOf('--discard-prev') - 1);
       }
     });
   }
+
   return newArr;
+
 };
